@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
 
     public int score;
     public int cloudMove;
+    public GameObject shieldPrefab;
 
     private bool gameOver;
 
@@ -70,10 +71,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(spawnTime);
         CreateCoin();
         StartCoroutine(SpawnCoin());
-    }
-    void CreatePowerup()
-    {
-        Instantiate(powerupPrefab, new Vector3(Random.Range(-horizontalScreenSize * 0.8f, horizontalScreenSize * 0.8f), Random.Range(-verticalScreenSize * 0.8f, verticalScreenSize * 0.8f), 0), Quaternion.identity);
     }
 
 
@@ -127,6 +124,12 @@ public class GameManager : MonoBehaviour
 
         }
     }
+    void CreatePowerup()
+    {
+        GameObject newPowerup = Instantiate(powerupPrefab, new Vector3(Random.Range(-horizontalScreenSize * 0.8f, horizontalScreenSize * 0.8f), Random.Range(-verticalScreenSize * 0.8f, verticalScreenSize * 0.8f), 0), Quaternion.identity);
+
+        Destroy(newPowerup, 5f);
+    }
     void CreateEnemyOne()
     {
         Instantiate(enemyOnePrefab, new Vector3(Random.Range(-9f, 9f), 6.5f, 0), Quaternion.identity);
@@ -172,4 +175,3 @@ public class GameManager : MonoBehaviour
     }
 
 }
-

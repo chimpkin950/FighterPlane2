@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     public GameObject BigBulletPrefab;
     public GameObject explosionPrefab;
     public GameObject thrusterPrefab;
+    public GameObject shieldPrefab;
 
     void Start()
     {
@@ -47,9 +48,16 @@ public class PlayerController : MonoBehaviour
     }
     public void LoseALife()
     {
+        if (shieldPrefab.activeSelf == true)
+        {
+            shieldPrefab.SetActive(false);
+            gameManager.ManagePowerupText(0);
+            gameManager.PlaySound(2);
+        }
         //lives = lives - 1;
         //lives -= 1;
-
+        else 
+        {
         lives--;
         gameManager.ChangeLivesText(lives);
         if (lives == 0)
@@ -58,6 +66,7 @@ public class PlayerController : MonoBehaviour
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             gameManager.GameOver();
             Destroy(this.gameObject);
+        }
         }
 
     }
@@ -80,6 +89,13 @@ public class PlayerController : MonoBehaviour
         gameManager.PlaySound(2);
     }
 
+  IEnumerator ShieldPowerDown()
+    {
+        yield return new WaitForSeconds(3f);
+        shieldPrefab.SetActive(false);
+        gameManager.ManagePowerupText(0);
+        gameManager.PlaySound(2);
+    }
 
     private void OnTriggerEnter2D(Collider2D whatDidIHit)
     {
@@ -118,6 +134,8 @@ public class PlayerController : MonoBehaviour
                     //Do I already have a shield?
                     //If yes: do nothing
                     //If not: activate the shield's visibility
+                    shieldPrefab.SetActive(true);
+                    StartCoroutine(ShieldPowerDown());
                     gameManager.ManagePowerupText(4);
                     break;
             }
@@ -167,4 +185,3 @@ public class PlayerController : MonoBehaviour
 
     }
 }
-
